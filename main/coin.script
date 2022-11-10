@@ -1,6 +1,7 @@
 function init(self)
-	self.dashes = gui.get_node("dashes")
-	self.coins = gui.get_node("coins")
+	-- Add initialization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
 end
 
 function final(self)
@@ -15,11 +16,19 @@ function update(self, dt)
 	-- Remove this function if not needed
 end
 
+function fixed_update(self, dt)
+	-- This function is only called if 'Use Fixed Timestep' is enabled in the Physics section of game.project
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
 function on_message(self, message_id, message, sender)
-	if message_id == hash("show_dashes") then
-		gui.set_text(self.dashes, "Dashes: " .. message.dashes)
-	elseif message_id == hash("update_coins") then
-		gui.set_text(self.coins, "Coins: " .. message.coins)
+	if message_id == hash("trigger_response") then
+		if message.enter then
+			msg.post(message.other_id, "give_coin")
+			go.delete()
+		end
 	end
 end
 

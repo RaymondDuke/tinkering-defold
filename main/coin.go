@@ -1,6 +1,6 @@
 components {
-  id: "player"
-  component: "/main/player.script"
+  id: "script"
+  component: "/main/coin.script"
   position {
     x: 0.0
     y: 0.0
@@ -16,8 +16,8 @@ components {
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "tile_set: \"/main/main.atlas\"\n"
-  "default_animation: \"logo\"\n"
+  data: "tile_set: \"/main/items.tilesource\"\n"
+  "default_animation: \"coin\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
@@ -41,8 +41,8 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"player\"\n"
-  "mask: \"pickup\"\n"
+  "group: \"pickup\"\n"
+  "mask: \"player\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -60,8 +60,8 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 50.0\n"
-  "  data: 50.0\n"
+  "  data: 10.0\n"
+  "  data: 10.0\n"
   "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"
