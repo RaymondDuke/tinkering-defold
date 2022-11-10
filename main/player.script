@@ -1,8 +1,13 @@
-go.property("speed", 250)
+-- dashing
+go.property("dashing", false)
 go.property("dash_cooldown", 3)
 go.property("total_dashes", 1)
-go.property("dashing", false)
+go.property("dash_distance", 250)
+
+-- movement
+go.property("speed", 250)
 go.property("input", vmath.vector3())
+
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
@@ -23,7 +28,7 @@ function update(self, dt)
 	end
 
 	if self.dashing then
-		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos + self.input * 250, go.EASING_LINEAR, .2, 0, function()
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos + self.input * self.dash_distance, go.EASING_LINEAR, .2, 0, function()
 			timer.delay(self.dash_cooldown, false, function()
 				self.total_dashes = self.total_dashes + 1
 				msg.post("/guis", "show_dashes", { dashes = self.total_dashes } )
