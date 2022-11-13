@@ -1,17 +1,27 @@
 image: "/assets/tile.png"
-tile_width: 32
-tile_height: 32
+tile_width: 64
+tile_height: 64
 tile_margin: 0
 tile_spacing: 0
 collision: ""
 material_tag: "tile"
 collision_groups: "default"
+collision_groups: "ground"
 animations {
-  id: "anim"
+  id: "stable"
   start_tile: 1
   end_tile: 1
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+animations {
+  id: "unstable"
+  start_tile: 1
+  end_tile: 5
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 5
   flip_horizontal: 0
   flip_vertical: 0
 }

@@ -32,11 +32,6 @@ embedded_components {
     z: 0.0
     w: 1.0
   }
-  scale {
-    x: 0.5
-    y: 0.5
-    z: 1.0
-  }
 }
 embedded_components {
   id: "collisionobject"
@@ -48,6 +43,7 @@ embedded_components {
   "restitution: 0.5\n"
   "group: \"player\"\n"
   "mask: \"pickup\"\n"
+  "mask: \"ground\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -65,8 +61,8 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 50.0\n"
-  "  data: 50.0\n"
+  "  data: 32.0\n"
+  "  data: 32.0\n"
   "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"

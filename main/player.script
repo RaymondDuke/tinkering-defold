@@ -13,6 +13,11 @@ go.property("input", vmath.vector3())
 -- items
 go.property("coins", 0)
 
+-- camera
+go.property("cam_follow", true)
+
+
+local TILESIZE = 64
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
@@ -27,9 +32,30 @@ function final(self)
 	-- Remove this function if not needed
 end
 
+local function get_player_tile(pos)
+	return vmath.vector3(math.floor((pos.x + TILESIZE) / TILESIZE), math.floor((pos.y + TILESIZE) / TILESIZE), pos.z)
+end
+
 function update(self, dt)
 	local pos = go.get_position()
+	local ptile = get_player_tile(pos)
 	-- go.set_position(go.get_position(), "/camera")
+	local tile = tilemap.get_tile("/background#background", "ground", ptile.x, ptile.y)
+	
+	if tile == 1 then
+		local ground = 1
+		timer.delay(0.5, true, function(self, ground_gone, time_elapsed)
+			tilemap.set_tile("/background#background", "ground", ptile.x, ptile.y, ground + 1)
+			ground = ground + 1
+			if ground == 5 then
+				timer.cancel(ground_gone)
+			end
+		end)
+	elseif tile == 4 or tile == 5 then
+		msg.post(".", "release_input_focus")
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, .01, go.EASING_LINEAR, .5)
+		go.animate(".", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, .5)
+	end
 	
 	if vmath.length(self.input) > 1 then
 		self.input = vmath.normalize(self.input)
@@ -47,7 +73,7 @@ function update(self, dt)
 
 	pos = pos + self.input * self.speed * dt
 	go.set_position(pos)
-	print(self.input)
+	-- print(self.input)
 	self.input = vmath.vector3()
 end
 
@@ -61,6 +87,8 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("give_coin") then
 		self.coins = self.coins + 1
 		msg.post("/guis", "update_coins", { coins = self.coins } )
+	elseif message_id == hash("trigger_response") then
+		pprint(message)
 	end
 end
 

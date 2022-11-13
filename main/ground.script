@@ -1,5 +1,5 @@
 function init(self)
-	msg.post(".", "acquire_camera_focus")
+	
 end
 
 function final(self)
@@ -9,7 +9,6 @@ function final(self)
 end
 
 function update(self, dt)
-	go.set_position(go.get_position("/player") - vmath.vector3(640, 360, 0))
 	-- Add update code here
 	-- Learn more: https://defold.com/manuals/script/
 	-- Remove this function if not needed
