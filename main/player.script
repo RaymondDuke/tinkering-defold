@@ -4,7 +4,8 @@ local data = require "main.data"
 go.property("dashing", false)
 go.property("dash_cooldown", 3)
 go.property("total_dashes", 1)
-go.property("dash_distance", 250)
+go.property("dash_distance", 256)
+go.property("dash_dir", vmath.vector3())
 
 -- movement
 go.property("speed", 250)
@@ -41,17 +42,28 @@ function update(self, dt)
 	local ptile = get_player_tile(pos)
 	-- go.set_position(go.get_position(), "/camera")
 	local tile = tilemap.get_tile("/background#background", "ground", ptile.x, ptile.y)
+
+	-- if self.dashing then
+	-- 	go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos + self.input * self.dash_distance, go.EASING_LINEAR, .2, 0, function()
+	-- 		timer.delay(self.dash_cooldown, false, function()
+	-- 			self.total_dashes = self.total_dashes + 1
+	-- 			msg.post("/guis", "show_dashes", { dashes = self.total_dashes } )
+	-- 		end)
+	-- 	end)
+	-- 	self.dashing = false
+	-- end
 	
-	if tile == 1 then
+	if tile == 1 and not self.dashing then
 		local ground = 1
 		timer.delay(0.5, true, function(self, ground_gone, time_elapsed)
 			tilemap.set_tile("/background#background", "ground", ptile.x, ptile.y, ground + 1)
 			ground = ground + 1
-			if ground == 5 then
+			if ground == 4 then
+				tilemap.set_tile("/background#background", "ground", ptile.x, ptile.y, 0)
 				timer.cancel(ground_gone)
 			end
 		end)
-	elseif tile == 4 or tile == 5 then
+	elseif tile == 0 and not self.dashing then
 		msg.post(".", "release_input_focus")
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, .01, go.EASING_LINEAR, .5)
 		go.animate(".", "euler.z", go.PLAYBACK_LOOP_FORWARD, 360, go.EASING_LINEAR, .5)
@@ -61,19 +73,10 @@ function update(self, dt)
 		self.input = vmath.normalize(self.input)
 	end
 
-	if self.dashing then
-		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos + self.input * self.dash_distance, go.EASING_LINEAR, .2, 0, function()
-			timer.delay(self.dash_cooldown, false, function()
-				self.total_dashes = self.total_dashes + 1
-				msg.post("/guis", "show_dashes", { dashes = self.total_dashes } )
-			end)
-		end)
-		self.dashing = false
-	end
-
 	pos = pos + self.input * self.speed * dt
 	go.set_position(pos)
 	-- print(self.input)
+	self.dash_dir = self.input
 	self.input = vmath.vector3()
 end
 
@@ -107,8 +110,16 @@ function on_input(self, action_id, action)
 
 	if action_id == hash("spacebar") and action.pressed then
 		if self.total_dashes > 0 then
-			self.total_dashes = self.total_dashes - 1
 			self.dashing = true
+			self.total_dashes = self.total_dashes - 1
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, go.get_position() + self.dash_dir * self.dash_distance, go.EASING_LINEAR, .2, 0, function()
+				self.dashing = false
+				timer.delay(self.dash_cooldown, false, function()
+					self.total_dashes = self.total_dashes + 1
+					msg.post("/guis", "show_dashes", { dashes = self.total_dashes } )
+				end)
+			end)
+			
 			sound.play("/sounds#dash")
 			msg.post("/guis", "show_dashes", { dashes = self.total_dashes } )
 		else
