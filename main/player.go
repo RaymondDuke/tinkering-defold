@@ -17,9 +17,15 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "tile_set: \"/main/main.atlas\"\n"
-  "default_animation: \"logo\"\n"
+  "default_animation: \"ball\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
+  "slice9 {\n"
+  "  x: 16.0\n"
+  "  y: 16.0\n"
+  "  z: 16.0\n"
+  "  w: 16.0\n"
+  "}\n"
   ""
   position {
     x: 0.0
@@ -27,10 +33,10 @@ embedded_components {
     z: 0.0
   }
   rotation {
-    x: 0.0
+    x: -0.0050927717
     y: 0.0
     z: 0.0
-    w: 1.0
+    w: 0.999987
   }
 }
 embedded_components {
@@ -49,7 +55,7 @@ embedded_components {
   "    shape_type: TYPE_BOX\n"
   "    position {\n"
   "      x: 0.0\n"
-  "      y: 0.0\n"
+  "      y: 10.0\n"
   "      z: 0.0\n"
   "    }\n"
   "    rotation {\n"
@@ -61,8 +67,8 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 32.0\n"
-  "  data: 32.0\n"
+  "  data: 24.0\n"
+  "  data: 24.0\n"
   "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"
