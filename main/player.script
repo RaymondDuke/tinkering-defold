@@ -6,6 +6,7 @@ go.property("dash_cooldown", 3)
 go.property("total_dashes", 1)
 go.property("dash_distance", 256)
 go.property("dash_dir", vmath.vector3())
+go.property("testing", 0)
 
 -- movement
 go.property("speed", 0)
